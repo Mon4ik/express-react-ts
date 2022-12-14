@@ -1,13 +1,13 @@
 const path = require('path');
 const glob = require('glob');
 
-let entry = {}
-let files = glob.sync('./src/*.jsx');
-let filenames = glob.sync('./src/*.jsx').map(filename => path.basename(filename, '.jsx'))
+let filenames = glob.sync('./src/**/*.tsx')
+    .filter((name) => !name.startsWith("./src/components"))
+    .map((name) => ({
+        [path.basename(name, ".tsx")]: name
+    }))
 
-filenames.forEach((filename, i) => {
-    entry[filename] = files[i]
-})
+let entry = Object.assign({}, ...filenames)
 
 module.exports = {
     mode: "production",
@@ -20,15 +20,24 @@ module.exports = {
     resolve: {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
     },
+    watchOptions: {
+        aggregateTimeout: 300,
+        poll: 1000,
+        ignored: /node_modules/
+    },
     module: {
         rules: [
             {
-                test: /\.?jsx$/,
+                test: /\.tsx$/,
                 exclude: /node_modules/,
                 use: {
                     loader: "babel-loader",
                     options: {
-                        presets: ['@babel/preset-env', '@babel/preset-react']
+                        presets: [
+                            '@babel/preset-typescript',
+                            '@babel/preset-env',
+                            '@babel/preset-react'
+                        ]
                     }
                 }
             },
