@@ -32,8 +32,12 @@ React App on Express Back-end
 ## How to edit
 ### Common
 - React files are in `/src`
+- First routes defs are in `/index.ts`
+- Routes files are in `/routes`
 - Public files are in `/public`
-- Routes are in `/routes`
+## Dist
 - Webpack bundles are in `/webpack`
+- Typescript build is in `/dist`
 ### Template
 HTML template is in `/views/react.ejs`
+Error template is in `/views/error.ejs`
